@@ -2,6 +2,8 @@ import sys
 
 def reactive_pair(chrA, chrB):
     #print(f'comparing {chrA}, {chrB}: {abs(ord(chrA) - ord(chrB)) == 32}')
+    global comparisons
+    comparisons += 1
     return abs(ord(chrA) - ord(chrB)) == 32
 
 def remove_pairs(input_str):
@@ -30,7 +32,8 @@ def remove_pairs(input_str):
 
 if __name__ == '__main__':
     infile = sys.argv[1]
+    comparisons = 0
     with open(infile) as fh:
         puzzle_input = fh.read()
         puzzle_answer = remove_pairs(puzzle_input)
-        print(len(puzzle_answer))
+    print(comparisons)
