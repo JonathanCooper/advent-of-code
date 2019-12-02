@@ -1,0 +1,61 @@
+import sys
+
+class Node():
+
+    def __init__(self):
+        self.children = []
+
+    def add_child(self, child):
+        self.children.append(child)
+
+class Graph():
+
+    def __init__(self):
+        self.nodes = {}
+
+    def add_node(self, node_id):
+        if node_id in self.nodes.keys():
+            return
+        self.nodes[node_id] = Node()
+
+if __name__ == '__main__':
+    graph = {}
+    seen = set()
+    children = set()
+    infile = sys.argv[1]
+    with open(infile) as fh:
+        for line in fh:
+            split = line.split()
+            parent_id, child_id = split[1], split[7]
+            if parent_id not in seen:
+                seen.add(parent_id)
+                graph[parent_id] = Node()
+            if child_id not in seen:
+                seen.add(child_id)
+                children.add(child_id)
+                graph[child_id] = Node()
+            graph[parent_id].add_child(child_id)
+    root_set = seen - children
+    if len(root_set) != 1:
+        raise ValueError('multiple roots')
+    root = list(root_set)[0]
+    
+    order_str = ''
+    
+    current_children = ['C']
+    seen_children = set()
+    while len(current_children) > 0:
+        print(order_str, current_children)
+        current_children.sort()
+        next_id = current_children.pop(0)
+        next_node = graph[next_id]
+        new_children = []
+        for child in next_node.children:
+            if child not in seen_children:
+                seen_children.add(child)
+                new_children.append(child)
+        current_children += new_children
+        order_str += next_id
+
+    print(f'final order is {order_str}')
+

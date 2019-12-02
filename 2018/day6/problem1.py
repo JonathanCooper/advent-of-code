@@ -4,8 +4,8 @@ def get_distances(points):
     _, _, largest_x, largest_y = find_maxes(points)
     end = max(largest_x, largest_y)
     areas = {}
-    for row in range(end):
-        for column in range(end):
+    for row in range(400):
+        for column in range(400):
             coord = (column, row)
             closest_point = closest(coord, points)
             if closest_point:
@@ -42,8 +42,6 @@ def closest(coord, points):
             return k
 
 def on_edge(coord, points):
-    if coord == (349, 353):
-        return False
     smallest_x, smallest_y, largest_x, largest_y = find_maxes(points)
     if coord[0] in [smallest_x, largest_x]:
         return True
@@ -52,16 +50,31 @@ def on_edge(coord, points):
     else:
         return False
 
+def enclosed(coord, points):
+    found_top_left, found_bottom_left, found_top_right, found_bottom_right = False, False, False, False
+    for point in points:
+        if point[0] < coord[0] and point[1] < coord[1]:
+            found_top_left = True
+        elif point[0] < coord[0] and point[1] > coord[1]:
+            found_bottom_left = True
+        elif point[0] > coord[0] and point[1] < coord[1]:
+            found_top_right = True
+        elif point[0] > coord[0] and point[1] > coord[1]:
+            found_bottom_right = True
+    #print(coord, found_top_left and found_bottom_left and found_top_right and found_bottom_right)
+    return found_top_left and found_bottom_left and found_top_right and found_bottom_right
+
 def largest_not_infinite(points):
     max_distance = 0
     areas = get_distances(points)
     #print(areas)
     for k, v in areas.items():
-        if on_edge(k, points):
-            #print(f'{k} is on edge')
-            continue
-        elif v > max_distance:
+        #print(f'current max: {max_distance}. checking {k}, {v}')
+        if v > max_distance and enclosed(k, points):
             max_distance = v
+            max_point = k
+            #print(f'current max_point: {max_point}')
+    print(max_point)
     return max_distance
             
 if __name__ == '__main__':
