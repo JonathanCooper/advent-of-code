@@ -1,14 +1,4 @@
 
-def recursive_orbits(node):
-    #print(f'enter recursive_orbits for {node}')
-    if len(node.children) == 0:
-        return node.depth()
-    child_orbits = 0
-    for child in node.children:
-        child_orbits += recursive_orbits(child)
-    #print(f'{child_orbits + node.depth()} from {node} and below')
-    return child_orbits + node.depth()
-
 def is_decendent(root, search_node):
     if root.name == search_node.name:
         return True
