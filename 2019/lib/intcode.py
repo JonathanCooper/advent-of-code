@@ -61,7 +61,6 @@ class Intcode(object):
 
     def multiply(self, param_list):
         val1, val2, target = param_list
-        #print(f'MULT: setting position {target} to {int(self.instructions[val1]) * int(self.instructions[val2])}')
         self.instructions[target] = self.instructions[val1] * self.instructions[val2]
         return False
 
