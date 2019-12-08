@@ -117,13 +117,14 @@ class Intcode(object):
         return False
 
     def run(self):
+        '''
+        Run the instructions until we a HALT(99) or OUTPUT(4) instruction
+        Returns True if halted, else False (paused after OUTPUT(4) op)
+        '''
         last_op = None
         while last_op not in [99, 4]:
             last_op = self.process_op()
         return last_op == 99
 
     def __repr__(self):
-        return f'Intcode({self.instructions})'
-
-    def __str__(self):
-        return str(self.instructions[0])
+        return f'Intcode({self.instructions}, {self.inputs})' 
