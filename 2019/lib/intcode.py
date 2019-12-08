@@ -1,5 +1,6 @@
 class Operation(object):
 
+
     def __init__(self, function, num_params):
         self.function = function
         self.num_params = num_params
