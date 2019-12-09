@@ -119,7 +119,7 @@ class Intcode(object):
 
     def run(self):
         '''
-        Run the instructions until we a HALT(99) or OUTPUT(4) instruction
+        Run the instructions until we hit a HALT(99) or OUTPUT(4) instruction
         Returns True if halted, else False (paused after OUTPUT(4) op)
         '''
         last_op = None
