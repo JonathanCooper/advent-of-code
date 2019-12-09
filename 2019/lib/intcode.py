@@ -21,16 +21,26 @@ class Intcode(object):
             6: Operation(self.jump_false, 2),
             7: Operation(self.less_than, 3),
             8: Operation(self.equals, 3),
+            9: Operation(self.adjust_base, 1),
             99: Operation(self.halt, 0),
         }
         self.inputs = program_inputs
         self.output = None
+        self.relative_base = 0
+        self.stdout = []
 
     def instruction_split(self, instruction):
         instruction = str(instruction)
         opcode = int(instruction[-2:])
         params = [ int(i) for i in instruction[:-2] ]
         return (params, opcode)
+
+    def resize_memory(self, param_list):
+        if len(param_list) > 0:
+            max_possible_address = max(param_list) + 1
+            if max_possible_address > len(self.instructions):
+                for _ in range(max_possible_address - len(self.instructions)):
+                    self.instructions.append(0)
 
     def process_op(self):
         instruction = self.instructions[self.cursor]
@@ -46,10 +56,12 @@ class Intcode(object):
                 val = self.cursor + i
             elif param_mode == 0:
                 val = self.instructions[self.cursor + i]
+            elif param_mode == 2:
+                val = self.instructions[self.cursor + i] + self.relative_base
             else:
                 raise Exception(f'Unknown parameter mode: {param_mode} ({type(param_mode)})')
             param_list.append(val)
-        old_cursor = self.cursor
+        self.resize_memory(param_list)
         modified = operation.function(param_list)
         if not modified:
             self.cursor += operation.num_params + 1
@@ -110,6 +122,14 @@ class Intcode(object):
             raise Exception(f'Wrong number of params to get_input: {param_list}')
         val = param_list[0]
         self.output = self.instructions[val]
+        self.stdout.append(self.instructions[val])
+        return False
+
+    def adjust_base(self, param_list):
+        if len(param_list) != 1:
+            raise Exception(f'Wrong number of params to get_input: {param_list}')
+        val = param_list[0]
+        self.relative_base += self.instructions[val]
         return False
 
     def halt(self, param_list):
@@ -117,13 +137,16 @@ class Intcode(object):
             raise Exception(f'Wrong number of params to halt: {param_list}')
         return False
 
-    def run(self):
+    def run(self, pause_on_output=False):
         '''
         Run the instructions until we hit a HALT(99) or OUTPUT(4) instruction
         Returns True if halted, else False (paused after OUTPUT(4) op)
         '''
         last_op = None
-        while last_op not in [99, 4]:
+        stop_codes = [99]
+        if pause_on_output:
+            stop_codes.append(4)
+        while last_op not in stop_codes:
             last_op = self.process_op()
         return last_op == 99
 
