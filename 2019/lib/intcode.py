@@ -53,14 +53,14 @@ class Intcode(object):
             except IndexError:
                 param_mode = 0
             if param_mode == 1:
-                val = self.cursor + i
+                param_address = self.cursor + i
             elif param_mode == 0:
-                val = self.instructions[self.cursor + i]
+                param_address = self.instructions[self.cursor + i]
             elif param_mode == 2:
-                val = self.instructions[self.cursor + i] + self.relative_base
+                param_address = self.instructions[self.cursor + i] + self.relative_base
             else:
                 raise Exception(f'Unknown parameter mode: {param_mode} ({type(param_mode)})')
-            param_list.append(val)
+            param_list.append(param_address)
         self.resize_memory(param_list)
         modified = operation.function(param_list)
         if not modified:
