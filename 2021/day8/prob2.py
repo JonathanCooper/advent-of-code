@@ -3,6 +3,7 @@
 2 segments:  c and f, 1
 3 segments but not in 1:  a, 7
 take 3 len6 digits, the segments that is in all of them but is not a is b
+^ no that is wrong
 take 3 len5 digits, the segment that appears in only one but is not b is e
 in the len 4 digit, the segment that is not in the len2 digit and is not b is d
 in the len6 digit that contains a, b , e, and d, the segment that is in the len2 digit is f, the one that is not is c
