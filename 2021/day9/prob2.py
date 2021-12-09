@@ -94,7 +94,7 @@ for x, y, val in grid:
     if grid.is_low_point(x, y):
         basin = grid.get_basin_coords(x, y)
         basin_sizes.append(len(basin))
-    grid.clear()
+        grid.clear()
 
 basin_sizes.sort()
 print(basin_sizes[-1] * basin_sizes[-2] * basin_sizes[-3])
