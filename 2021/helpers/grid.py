@@ -56,8 +56,4 @@ class Grid(object):
         return (rx, ry, val)
 
     def __repr__(self):
-        repr_str = ''
-        for row in self.rows:
-            repr_str += ''.join([ str(x) for x in row ])
-            repr_str += '\n'
-        return repr_str
+        return '\n'.join([''.join([ str(c) for c in row ]) for row in self.rows ])
