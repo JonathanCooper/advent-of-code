@@ -14,7 +14,7 @@ class Grid(object):
         return len(self.rows[0])
 
     def get_val(self, x, y):
-        return int(self.rows[y][x])
+        return self.rows[y][x]
 
     def neighbors(self, x, y, diag=False):
         n_coords = [
