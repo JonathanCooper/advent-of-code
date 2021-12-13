@@ -91,7 +91,6 @@ for x, y in points:
 
 for axis, val in folds:
     grid.fold(axis, val)
-    break
 
-#print(grid)
-print(grid.count())
+print(grid)
+#print(grid.count())
