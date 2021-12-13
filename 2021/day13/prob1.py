@@ -65,7 +65,7 @@ max_y = 0
 points = []
 folds = []
 
-with open('test.txt') as fh:
+with open('in.txt') as fh:
     for line in fh:
         line = line.strip()
         if line == '':
