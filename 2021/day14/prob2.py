@@ -11,7 +11,7 @@ def run(pair_counts, rules, n=1):
             #print(f'splitting {pair} into {left} and {right}')
             for side in [left, right]:
                 try:
-                    new_counts[side] += + count
+                    new_counts[side] += count
                 except KeyError:
                     new_counts[side] = count 
         pair_counts = new_counts
