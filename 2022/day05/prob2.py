@@ -1,20 +1,4 @@
 
-class Stack(object):
-
-
-    def __init__(self):
-        self.pile = []
-
-    def pop(self):
-        return self.pile.pop()
-
-    def push(self, val):
-        self.pile.append(val)
-
-
-    def __repr__(self):
-        return f'Stack({self.pile}'
-
 stack_lines = []
 instructions = []
 
