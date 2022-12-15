@@ -1,0 +1,49 @@
+
+def compare(left, right):
+    left_i = 1
+    right_i = 1
+    while True:
+        left_char = left[left_i]
+        right_char = right[right_i]
+        if left_char == ',' and right_char == ',':
+            left_i += 1
+            right_i += 1
+            continue
+        #print(f'comparing {left_char} to {right_char}')
+        if right_char == ']' and left_char != ']':
+            return False
+        if left_char == ']' and right_char != ']':
+            return True
+        if left_char.isdigit() and right_char.isdigit():
+            if left_char == right_char:
+                pass
+            else:
+                return int(left_char) < int(right_char)
+        if left_char.isdigit() and right_char == '[':
+            right_i += 1
+        elif right_char.isdigit() and left_char == '[':
+            left_i += 1
+        else:
+            left_i += 1
+            right_i += 1
+
+start = 0
+block = 3
+
+pair_idx = 1
+total = 0
+
+with open('in.txt') as fh:
+    lines = [ line.strip() for line in fh.readlines() ]
+    while start < len(lines) - 1:
+        left = lines[start]
+        right = lines[start + 1]
+        #print(left, right)
+        if compare(left, right):
+            print(left)
+            print(right)
+            total += pair_idx
+        pair_idx += 1
+        start += block
+
+print(total)

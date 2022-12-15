@@ -1,0 +1,48 @@
+
+def compare(left, right):
+    #print(f'called compare with {left} and {right}')
+    left = left[1:]
+    right = right[1:]
+    if not left.startswith('[') and not right.startswith('['):
+        if left.startswith(','):
+            left = left[1:]
+        if right.startswith(','):
+            right = right[1:]
+        if left[0] == right[0]:
+            left = f'[{left[2:]}'
+            right = f'[{right[2:]}'
+            if left == '[':
+                return True
+            elif right == '[':
+                return False
+            else:
+                return compare(left, right)
+        else:
+            return left[0] < right[0]
+    elif left.startswith('[') and right.startswith('['):
+        return compare(left, right)
+    else:
+        for side in [left, right]:
+            if not side.startswith('['):
+                side = f'[{side[0]}]'
+        return compare(left, right)
+
+start = 0
+block = 3
+
+pair_idx = 1
+total = 0
+
+with open('test.txt') as fh:
+    lines = [ line.strip() for line in fh.readlines() ]
+    while start < len(lines) - 1:
+        left = lines[start]
+        right = lines[start + 1]
+        print(left, right)
+        if compare(left, right):
+            total += pair_idx
+            print(pair_idx)
+        pair_idx += 1
+        start += block
+
+print(total)
