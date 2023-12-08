@@ -11,32 +11,21 @@ spellings = {
     "nine": "9",
 }
 
-def _replace_digits(line):
-    print(line)
-    i = 0
-    while i < len(line):
-        print(i, len(line), line[i:])
-        replaced = False
-        for k, v in spellings.items():
-            if line[i:].startswith(k):
-                line = line.replace(k, v)
-                break
-        i += 1
-    print(" ", line)
-    return line
-
 def replace_digits(line):
     new_str = ""
     #print(line)
     while len(line) > 0:
+        #print(f"checking {line} to see if it starts with a spelled out digit")
         replaced = False
         for k, v in spellings.items():
             if line.startswith(k):
                 new_str += v
                 line = line[len(k):]
                 replaced = True
+                #print(f"replaced a digit, new_str is {new_str}")
                 break
         if not replaced:
+            #print("did not replace")
             new_str += line[0]
             line = line[1:]
     #print(new_str)
@@ -44,20 +33,24 @@ def replace_digits(line):
 
 def process(line):
     line = line.strip()
-    line = replace_digits(line)
+    new_line = replace_digits(line)
     first = None
-    for c in line:
+    for c in new_line:
         if c.isdigit():
             if not first:
                 first = c
             last = c
-    #print(int(first + last))
     return int(first + last)
 
 total = 0
 
-with open("in.txt") as fh:
-    for line in fh:
-        total += process(line)
+#with open("in.txt") as fh:
+#    for line in fh:
+#        total += process(line)
 
-print(total)
+
+with open("test3.txt") as fh:
+    for test_str in fh:
+        test_str = test_str.strip()
+        print(test_str, process(test_str))
+
