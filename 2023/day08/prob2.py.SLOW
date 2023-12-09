@@ -1,0 +1,62 @@
+2
+class Node(object):
+    def __init__(self, name, left_child, right_child):
+        self.name = name
+        self.left_child = left_child
+        self.right_child = right_child
+
+    def __repr__(self):
+        return f"{self.name} = ({self.left_child}, {self.right_child})"
+
+class Graph(object):
+    def __init__(self):
+        self.nodes = {}
+
+    def add_node(self, name, left, right):
+        self.nodes[name] = Node(name, left, right)
+
+    def run(self, instructions):
+        self.instructions = instructions
+        loop_lengths = []
+        for node in self.nodes.values():
+            if node.name.endswith("A"):
+                loop_lengths.append(self.get_loop_len(node))
+        return loop_lengths
+
+    def get_loop_len(self, node):
+        self.steps = 0
+        instruction = self.instructions[self.steps % len(self.instructions)]
+        found_first_z = False
+        while not found_first_z not node.name.endswith("Z"):
+            if instruction == "L":
+                node = self.nodes[node_name].left_child
+            elif instruction == "R":
+                node = self.nodes[node_name].right_child
+            else:
+                raise ValueError(f"Unexpected instruction: {instruction}")
+            if node.name.endswith("Z"):
+                first_z = self.steps
+                found_first_z = True
+            self.steps + = 1
+       return (first_z, self.steps)
+
+
+graph = Graph()
+
+#with open("in.txt") as fh:
+with open("test3.txt") as fh:
+    for line in fh:
+        line = line.strip()
+        if line == "":
+            continue
+        elif "=" in line:
+            name, children_info = line.split("=")
+            name = name.strip()
+            children_info = children_info.lstrip(" (").rstrip(")")
+            left, right = children_info.split(", ")
+            graph.add_node(name, left, right)
+        else:
+            instructions = line
+
+
+print(graph.run(instructions))
